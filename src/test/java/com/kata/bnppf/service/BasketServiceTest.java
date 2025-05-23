@@ -8,6 +8,7 @@ import org.junit.jupiter.api.TestInfo;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -47,8 +48,14 @@ public class BasketServiceTest {
     @Test
     public void twoDifferentBookFivePercentDiscount() {
         BigDecimal totalShouldBe = new BigDecimal(95);
-        basket.getBooks().add(0);
-        basket.getBooks().add(1);
+        Collections.addAll(basket.getBooks(), 0, 1);
+        assertTrueBetweenSupposedTotalAndBasketGetTotal(totalShouldBe);
+    }
+
+    @Test
+    public void threeDifferentBookTenPercentDiscount() {
+        BigDecimal totalShouldBe = new BigDecimal(135);
+        Collections.addAll(basket.getBooks(), 0, 1, 2);
         assertTrueBetweenSupposedTotalAndBasketGetTotal(totalShouldBe);
     }
 
