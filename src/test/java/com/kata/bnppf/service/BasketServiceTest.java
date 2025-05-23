@@ -4,11 +4,12 @@ import com.kata.bnppf.calcUtils.DiscountCalculator;
 import com.kata.bnppf.model.entity.Basket;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BasketServiceTest {
     private Basket basket;
@@ -22,9 +23,29 @@ public class BasketServiceTest {
         basket = new Basket(new ArrayList<>());
     }
 
+    @BeforeEach
+    void logTestStart(TestInfo testInfo) {
+        System.out.println("====== Running: " + testInfo.getDisplayName() + " ======");
+    }
+
+    private void assertTrueBetweenSupposedTotalAndBasketGetTotal(BigDecimal totalShouldBe) {
+        BigDecimal resultBasketServiceGetTotal = basketService.getTotal(basket);
+        System.out.println("totalShouldBe: " + totalShouldBe);
+        System.out.println("basketService.getTotal(): " + resultBasketServiceGetTotal);
+        assertEquals(0, totalShouldBe.compareTo(resultBasketServiceGetTotal));
+    }
+
     @Test
     public void noBook() {
-        assertTrue(BigDecimal.valueOf(0).compareTo(basketService.getTotal(basket)) == 0);
+        BigDecimal totalShouldBe = new BigDecimal(0);
+        assertTrueBetweenSupposedTotalAndBasketGetTotal(totalShouldBe);
+    }
+
+    @Test
+    public void oneBookCost50e() {
+        BigDecimal totalShouldBe = new BigDecimal(50);
+        basket.getBooks().add(0);
+        assertTrueBetweenSupposedTotalAndBasketGetTotal(totalShouldBe);
     }
 
 }

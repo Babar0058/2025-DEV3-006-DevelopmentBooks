@@ -8,6 +8,6 @@ import java.math.BigDecimal;
 @Component
 public class DiscountCalculator {
     public BigDecimal getTotal(Basket basket) {
-        return BigDecimal.ZERO;
+        return BigDecimal.valueOf(basket.getBooks().size() * 50L);
     }
 }
