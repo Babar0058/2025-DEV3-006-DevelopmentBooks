@@ -1,0 +1,50 @@
+{
+	"info": {
+		"_postman_id": "95383908-a41f-4a39-ad0d-b5ffc746de73",
+		"name": "2025-DEV3-006/DevelopmentBooks",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37259443"
+	},
+	"item": [
+		{
+			"name": "basket",
+			"item": [
+				{
+					"name": "getTotal",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"books\": [0,1]\r\n}",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/basket/getTotal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"basket",
+								"getTotal"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
