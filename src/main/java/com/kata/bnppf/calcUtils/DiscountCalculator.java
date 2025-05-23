@@ -10,6 +10,8 @@ import java.util.Set;
 
 @Component
 public class DiscountCalculator {
+
+    private static final BigDecimal SINGLE_BOOK_PRICE = BigDecimal.valueOf(50);
     // 10 entries max
     private static final Map<Integer, Double> DISCOUNTS = Map.of(
             1, 1.0,
@@ -20,8 +22,15 @@ public class DiscountCalculator {
     );
 
     public BigDecimal getTotal(Basket basket) {
-        Set<Integer> unique = new HashSet<>(basket.getBooks());
-        int size = unique.size();
-        return BigDecimal.valueOf(size * 50d * DISCOUNTS.getOrDefault(size, 1.0));
+        int totalBooks = basket.getBooks().size();
+        Set<Integer> uniqueBooks = new HashSet<>(basket.getBooks());
+        int distinctBooks = uniqueBooks.size();
+
+        // Apply discount only if we have more than 1 distinct book
+        double discountFactor = DISCOUNTS.getOrDefault(distinctBooks, 1.0);
+
+        return SINGLE_BOOK_PRICE
+                .multiply(BigDecimal.valueOf(totalBooks))
+                .multiply(BigDecimal.valueOf(discountFactor));
     }
 }
