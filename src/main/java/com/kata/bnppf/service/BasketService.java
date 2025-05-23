@@ -1,6 +1,6 @@
 package com.kata.bnppf.service;
 
-import com.kata.bnppf.calcUtils.DiscountCalculator;
+import com.kata.bnppf.calculator.DiscountCalculator;
 import com.kata.bnppf.model.entity.Basket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
