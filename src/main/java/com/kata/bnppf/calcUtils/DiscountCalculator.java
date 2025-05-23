@@ -4,6 +4,7 @@ import com.kata.bnppf.model.entity.Basket;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -22,15 +23,33 @@ public class DiscountCalculator {
     );
 
     public BigDecimal getTotal(Basket basket) {
-        int totalBooks = basket.getBooks().size();
-        Set<Integer> uniqueBooks = new HashSet<>(basket.getBooks());
-        int distinctBooks = uniqueBooks.size();
+        Map<Integer, Integer> count = new HashMap<>();
+        // Count each instance of book {ID1=xInt, ID2=yInt}
+        for (int book : basket.getBooks()) {
+            count.put(book, count.getOrDefault(book, 0) + 1);
+        }
 
-        // Apply discount only if we have more than 1 distinct book
-        double discountFactor = DISCOUNTS.getOrDefault(distinctBooks, 1.0);
+        BigDecimal total = BigDecimal.ZERO;
 
-        return SINGLE_BOOK_PRICE
-                .multiply(BigDecimal.valueOf(totalBooks))
-                .multiply(BigDecimal.valueOf(discountFactor));
+        while (!count.isEmpty()) {
+            Set<Integer> group = new HashSet<>();
+
+            // We group different book id into one SET to apply the maximum discount
+            for (int book : new HashSet<>(count.keySet())) {
+                group.add(book);
+                count.put(book, count.get(book) - 1);
+                if (count.get(book) == 0) count.remove(book);
+            }
+
+            int groupSize = group.size();
+            double discountFactor = DISCOUNTS.get(groupSize);
+            BigDecimal groupTotal = SINGLE_BOOK_PRICE
+                    .multiply(BigDecimal.valueOf(groupSize))
+                    .multiply(BigDecimal.valueOf(discountFactor));
+
+            total = total.add(groupTotal);
+        }
+
+        return total;
     }
 }

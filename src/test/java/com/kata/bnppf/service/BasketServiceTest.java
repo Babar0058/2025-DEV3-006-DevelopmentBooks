@@ -13,6 +13,9 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BasketServiceTest {
+
+    private static final BigDecimal SINGLE_BOOK_PRICE = BigDecimal.valueOf(50);
+
     private Basket basket;
 
     private BasketService basketService;
@@ -54,21 +57,27 @@ public class BasketServiceTest {
 
     @Test
     public void threeDifferentBookTenPercentDiscount() {
-        BigDecimal totalShouldBe = new BigDecimal(135);
+        BigDecimal totalShouldBe = SINGLE_BOOK_PRICE
+                .multiply(BigDecimal.valueOf(3))
+                .multiply(BigDecimal.valueOf(0.90));
         Collections.addAll(basket.getBooks(), 0, 1, 2);
         assertTrueBetweenSupposedTotalAndBasketGetTotal(totalShouldBe);
     }
 
     @Test
     public void fourDifferentBookTwentyPercentDiscount() {
-        BigDecimal totalShouldBe = new BigDecimal(160);
+        BigDecimal totalShouldBe = SINGLE_BOOK_PRICE
+                .multiply(BigDecimal.valueOf(4))
+                .multiply(BigDecimal.valueOf(0.80));
         Collections.addAll(basket.getBooks(), 0, 1, 2, 3);
         assertTrueBetweenSupposedTotalAndBasketGetTotal(totalShouldBe);
     }
 
     @Test
     public void fiveDifferentBookTwentyFivePercentDiscount() {
-        BigDecimal totalShouldBe = new BigDecimal("187.5");
+        BigDecimal totalShouldBe = SINGLE_BOOK_PRICE
+                .multiply(BigDecimal.valueOf(5))
+                .multiply(BigDecimal.valueOf(0.75));
         Collections.addAll(basket.getBooks(), 0, 1, 2, 3, 4);
         assertTrueBetweenSupposedTotalAndBasketGetTotal(totalShouldBe);
     }
@@ -80,4 +89,36 @@ public class BasketServiceTest {
         assertTrueBetweenSupposedTotalAndBasketGetTotal(totalShouldBe);
     }
 
+    @Test
+    public void fiveDifferentBookTwentyFivePercentDiscountPlusOneBook() {
+        BigDecimal totalShouldBe = SINGLE_BOOK_PRICE
+                .multiply(BigDecimal.valueOf(5))
+                .multiply(BigDecimal.valueOf(0.75))
+                .add(SINGLE_BOOK_PRICE);
+        Collections.addAll(basket.getBooks(), 0, 0, 1, 2, 3, 4);
+        assertTrueBetweenSupposedTotalAndBasketGetTotal(totalShouldBe);
+    }
+
+    @Test
+    public void fiveDifferentBookTwentyFivePercentDiscountPlusTwoSameBook() {
+        BigDecimal totalShouldBe = SINGLE_BOOK_PRICE
+                .multiply(BigDecimal.valueOf(5))
+                .multiply(BigDecimal.valueOf(0.75))
+                .add(SINGLE_BOOK_PRICE
+                        .multiply(BigDecimal.valueOf(2)));
+        Collections.addAll(basket.getBooks(), 0, 0, 0, 1, 2, 3, 4);
+        assertTrueBetweenSupposedTotalAndBasketGetTotal(totalShouldBe);
+    }
+
+    @Test
+    public void fiveDifferentBookTwentyFivePercentDiscountPlusTwoDifferentBookFivePercentDiscount() {
+        BigDecimal totalShouldBe = SINGLE_BOOK_PRICE
+                .multiply(BigDecimal.valueOf(5))
+                .multiply(BigDecimal.valueOf(0.75))
+                .add(SINGLE_BOOK_PRICE
+                        .multiply(BigDecimal.valueOf(2))
+                        .multiply(BigDecimal.valueOf(0.95)));
+        Collections.addAll(basket.getBooks(), 0, 0, 1, 1, 2, 3, 4);
+        assertTrueBetweenSupposedTotalAndBasketGetTotal(totalShouldBe);
+    }
 }
