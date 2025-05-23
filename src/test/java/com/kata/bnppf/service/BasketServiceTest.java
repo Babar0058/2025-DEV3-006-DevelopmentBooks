@@ -59,4 +59,17 @@ public class BasketServiceTest {
         assertTrueBetweenSupposedTotalAndBasketGetTotal(totalShouldBe);
     }
 
+    @Test
+    public void fourDifferentBookTwentyPercentDiscount() {
+        BigDecimal totalShouldBe = new BigDecimal(160);
+        Collections.addAll(basket.getBooks(), 0, 1, 2, 3);
+        assertTrueBetweenSupposedTotalAndBasketGetTotal(totalShouldBe);
+    }
+
+    @Test
+    public void fiveDifferentBookTwentyFivePercentDiscount() {
+        BigDecimal totalShouldBe = new BigDecimal("187.5");
+        Collections.addAll(basket.getBooks(), 0, 1, 2, 3, 4);
+        assertTrueBetweenSupposedTotalAndBasketGetTotal(totalShouldBe);
+    }
 }
