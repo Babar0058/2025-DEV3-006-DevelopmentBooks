@@ -17,14 +17,10 @@ public class BasketServiceTest {
     private BasketService basketService;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp(TestInfo testInfo) {
         DiscountCalculator discountCalculator = new DiscountCalculator();
         basketService = new BasketService(discountCalculator);
         basket = new Basket(new ArrayList<>());
-    }
-
-    @BeforeEach
-    void logTestStart(TestInfo testInfo) {
         System.out.println("====== Running: " + testInfo.getDisplayName() + " ======");
     }
 
@@ -45,6 +41,14 @@ public class BasketServiceTest {
     public void oneBookCost50e() {
         BigDecimal totalShouldBe = new BigDecimal(50);
         basket.getBooks().add(0);
+        assertTrueBetweenSupposedTotalAndBasketGetTotal(totalShouldBe);
+    }
+
+    @Test
+    public void twoDifferentBookFivePercentDiscount() {
+        BigDecimal totalShouldBe = new BigDecimal(95);
+        basket.getBooks().add(0);
+        basket.getBooks().add(1);
         assertTrueBetweenSupposedTotalAndBasketGetTotal(totalShouldBe);
     }
 
